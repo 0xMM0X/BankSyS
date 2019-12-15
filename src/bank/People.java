@@ -24,7 +24,7 @@ public class People {
         Class.forName(DRIVER);
         Cursor = DriverManager.getConnection(URL, USER, PASSWORD);
         State = Cursor.createStatement();
-        String query = "UPDATE account SET `Balance` = '" + NewBalance + "' WHERE email = '" + email + "'";
+        String query = "UPDATE acc SET `Balance` = '" + NewBalance + "' WHERE email = '" + email + "'";
         State.executeUpdate(query);
         if (Cursor != null) {
             System.out.println("Changing Balance");
@@ -32,7 +32,18 @@ public class People {
         }
 
     }
+       public void UpdateBal(int AccNum, float NewBalance) throws ClassNotFoundException, SQLException {
+        Class.forName(DRIVER);
+        Cursor = DriverManager.getConnection(URL, USER, PASSWORD);
+        State = Cursor.createStatement();
+        String query = "UPDATE acc SET `Balance` = '" + NewBalance + "' WHERE AccNum = '" + AccNum + "'";
+        State.executeUpdate(query);
+        if (Cursor != null) {
+            System.out.println("Changing Balance");
 
+        }
+
+    }
     //DB Close connection
     public void closeconnection() throws SQLException, Exception {
         State.close();
@@ -48,7 +59,29 @@ public class People {
                 System.out.println(" Connected And Getting Data");
             }
             State = Cursor.createStatement();
-            String sader = "SELECT * FROM account WHERE email= '" + email_sel + "'";
+            String sader = "SELECT * FROM acc WHERE email= '" + email_sel + "'";
+            result = State.executeQuery(sader);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (result != null) {
+            return result;
+        } else {
+            return null;
+        }
+
+    }
+    public ResultSet GetData(int AccountNum) {
+        ResultSet result = null;
+        try {
+            Class.forName(DRIVER);
+            Cursor = DriverManager.getConnection(URL, USER, PASSWORD);
+            if (Cursor != null) {
+                System.out.println(" Connected And Getting Data");
+            }
+            State = Cursor.createStatement();
+            String sader = "SELECT * FROM acc WHERE AccNum= '" + AccountNum + "'";
             result = State.executeQuery(sader);
 
         } catch (Exception e) {
@@ -91,6 +124,14 @@ public class People {
         }
         return Email;
     }
+       public String EmailExist(int AccNum) throws SQLException {
+        ResultSet result = GetData(AccNum);
+        String Email = "Not Found";
+        while (result.next()) {
+            Email = result.getString("AccNum");
+        }
+        return Email;
+    }
 
     public int getBalance(String Email) throws SQLException {
         ResultSet result = GetData(Email);
@@ -100,4 +141,12 @@ public class People {
         }
         return Balance;
     }
+     public int getBalance(int AccNumber) throws SQLException {
+        ResultSet result = GetData(AccNumber);
+        int Balance=0;
+        while (result.next()) {
+            Balance = result.getInt("Balance");
+        }
+        return Balance;
+     }
 }

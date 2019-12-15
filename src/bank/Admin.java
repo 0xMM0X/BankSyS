@@ -37,7 +37,7 @@ public class Admin extends People {
         return pat.matcher(email).matches();
     }
 
-    public void Activation() throws ClassNotFoundException, SQLException {
+    public void ActivationForUser() throws ClassNotFoundException, SQLException {
 
         //Email input
         boolean Password_Checker_Flag = true;
@@ -93,6 +93,16 @@ public class Admin extends People {
                 break;
             }
         }
+        System.out.println("Please enter your Pin Code");
+         int pinCode = input.nextInt();
+        while (true) {
+            if ( String.valueOf(pinCode).length()==6) {
+               break;
+            } else {
+               System.out.println("Please enter a Pin Code that is 6 Number");
+                pinCode = input.nextInt();
+            }
+        }
         System.out.println("Please Enter the balance");
         Balance = input.nextFloat();
         Class.forName(DRIVER);
@@ -100,7 +110,7 @@ public class Admin extends People {
 
         //This Alert To Verified If The conection Is succeed or Not
         State = Cursor.createStatement();
-        String query = "INSERT INTO `account` (FirstName,lastname,Age,Balance,email,PASSWORD) VALUES ('" + First_Name + "','" + Last_Name + "','" + Age + "','" + Balance + "','" + Entered_Email + "','" + Password + "') ";
+        String query = "INSERT INTO `acc` (FirstName,lastname,Age,Balance,email,PASSWORD,pinCode) VALUES ('" + First_Name + "','" + Last_Name + "','" + Age + "','" + Balance + "','" + Entered_Email + "','" + Password +"','" + pinCode + "') ";
         State.executeUpdate(query);
         if (Cursor != null) {
             System.out.println("Registerd Succeded!");
@@ -124,7 +134,7 @@ public class Admin extends People {
 
         Cursor = DriverManager.getConnection(URL, USER, PASSWORD);
         State = Cursor.createStatement();
-        String query = "DELETE FROM account WHERE email='" + GivenEmail + "'";
+        String query = "DELETE FROM acc WHERE email='" + GivenEmail + "'";
         State.executeUpdate(query);
         if (Cursor != null) {
             System.out.println("Your records have been deleted from our database");
