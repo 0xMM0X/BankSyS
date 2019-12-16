@@ -20,6 +20,63 @@ public class People {
     Connection Cursor = null;
     Statement State = null;
 
+    public void Transaction(String filename, String str, float i) throws SQLException {
+        try {
+            int AccNum = getAccNum(filename);
+            filename = String.valueOf(AccNum);
+            File file = new File("C:/Users/MMOX/Desktop/BankSyS-master/Data/" + filename + ".txt");
+            FileWriter fr = new FileWriter(file, true);
+            fr.write(str + " " + i + "\n");
+            fr.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+    }
+
+    public void Transaction(int AccNum, String str, float i) throws SQLException {
+        try {
+
+            String filename = String.valueOf(AccNum);
+            File file = new File("C:/Users/MMOX/Desktop/BankSyS-master/Data/" + filename + ".txt");
+            FileWriter fr = new FileWriter(file, true);
+            fr.write(str + " " + i + "\n");
+            fr.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+    }
+    public void AccDeleted(int AccNum) throws SQLException {
+        try {
+
+            String filename = String.valueOf(AccNum);
+            File file = new File("C:/Users/MMOX/Desktop/BankSyS-master/Data/" + filename + ".txt");
+            FileWriter fr = new FileWriter(file, true);
+            fr.write(  "Account Deleted \n");
+            fr.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+    }
+     public void AccDeleted(String Email) throws SQLException {
+        try {
+            String filename=String.valueOf(getAccNum(Email));
+            File file = new File("C:/Users/MMOX/Desktop/BankSyS-master/Data/" + filename + ".txt");
+            FileWriter fr = new FileWriter(file, true);
+            fr.write(  "Account Deleted \n");
+            fr.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+    }
+
     public void UpdateBal(String email, float NewBalance) throws ClassNotFoundException, SQLException {
         Class.forName(DRIVER);
         Cursor = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -27,27 +84,34 @@ public class People {
         String query = "UPDATE acc SET `Balance` = '" + NewBalance + "' WHERE email = '" + email + "'";
         State.executeUpdate(query);
         if (Cursor != null) {
-            System.out.println("Changing Balance");
 
         }
 
     }
-       public void UpdateBal(int AccNum, float NewBalance) throws ClassNotFoundException, SQLException {
+
+    public void UpdateBal(int AccNum, float NewBalance) throws ClassNotFoundException, SQLException {
         Class.forName(DRIVER);
         Cursor = DriverManager.getConnection(URL, USER, PASSWORD);
         State = Cursor.createStatement();
         String query = "UPDATE acc SET `Balance` = '" + NewBalance + "' WHERE AccNum = '" + AccNum + "'";
         State.executeUpdate(query);
         if (Cursor != null) {
-            System.out.println("Changing Balance");
-
         }
-
     }
+
     //DB Close connection
     public void closeconnection() throws SQLException, Exception {
         State.close();
         Cursor.close();
+    }
+
+    public int getAccNum(String Email) throws SQLException {
+        ResultSet result = GetData(Email);
+        int AccNum = 0;
+        while (result.next()) {
+            AccNum = result.getInt("AccNum");
+        }
+        return AccNum;
     }
 
     public ResultSet GetData(String email_sel) {
@@ -56,7 +120,6 @@ public class People {
             Class.forName(DRIVER);
             Cursor = DriverManager.getConnection(URL, USER, PASSWORD);
             if (Cursor != null) {
-                System.out.println(" Connected And Getting Data");
             }
             State = Cursor.createStatement();
             String sader = "SELECT * FROM acc WHERE email= '" + email_sel + "'";
@@ -72,13 +135,13 @@ public class People {
         }
 
     }
+
     public ResultSet GetData(int AccountNum) {
         ResultSet result = null;
         try {
             Class.forName(DRIVER);
             Cursor = DriverManager.getConnection(URL, USER, PASSWORD);
             if (Cursor != null) {
-                System.out.println(" Connected And Getting Data");
             }
             State = Cursor.createStatement();
             String sader = "SELECT * FROM acc WHERE AccNum= '" + AccountNum + "'";
@@ -107,7 +170,7 @@ public class People {
         }
 
         if (Email.equals(DatabaseEmail) && Password.equals(DatabasePassword)) {
-            System.out.println("Hi " + DatabaseFirstName);
+            System.out.println("Hello, " + DatabaseFirstName);
             return true;
         } else {
             System.out.println("Incorrect Email or Password");
@@ -124,7 +187,8 @@ public class People {
         }
         return Email;
     }
-       public String EmailExist(int AccNum) throws SQLException {
+
+    public String EmailExist(int AccNum) throws SQLException {
         ResultSet result = GetData(AccNum);
         String Email = "Not Found";
         while (result.next()) {
@@ -135,18 +199,19 @@ public class People {
 
     public int getBalance(String Email) throws SQLException {
         ResultSet result = GetData(Email);
-        int Balance=0;
+        int Balance = 0;
         while (result.next()) {
             Balance = result.getInt("Balance");
         }
         return Balance;
     }
-     public int getBalance(int AccNumber) throws SQLException {
+
+    public int getBalance(int AccNumber) throws SQLException {
         ResultSet result = GetData(AccNumber);
-        int Balance=0;
+        int Balance = 0;
         while (result.next()) {
             Balance = result.getInt("Balance");
         }
         return Balance;
-     }
+    }
 }
