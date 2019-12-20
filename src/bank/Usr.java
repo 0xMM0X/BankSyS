@@ -66,17 +66,19 @@ public class Usr extends People {
         System.out.println(" Now, Your Balance become: " + (balance));
         Transaction(AccNum, "Deposited amount", value);
     }
-    public void WithdrawMoney() throws ClassNotFoundException, SQLException {
+    public void WithdrawMoney(String Email) throws ClassNotFoundException, SQLException {
         Float value;
         System.out.print("Dear Customer, Enter the amount that you want to Withdraw: ");
         value = input.nextFloat();
-        if (value <= Balance) {
-            this.Balance = Balance - value;
-            UpdateBal(Email, Balance);
+        float balance=getBalance(Email);
+        if (value <= balance) {
+           balance = balance - value;
+            UpdateBal(Email, balance);
             System.out.println("Withrew successfully!");
+            System.out.println("Your Balance has Become : " + balance);
             Transaction(Email, "Withdrew amount", value);
         } else {
-            System.out.println("You don't have that amount of money.\n Your Balance is : " + Balance);
+            System.out.println("You don't have that amount of money.\n Your Balance is : " + balance);
         }
     }
 

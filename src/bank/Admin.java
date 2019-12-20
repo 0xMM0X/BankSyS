@@ -115,6 +115,7 @@ public class Admin extends People {
         String query = "INSERT INTO `acc` (FirstName,lastname,Age,Balance,email,PASSWORD,pinCode) VALUES ('" + First_Name + "','" + Last_Name + "','" + Age + "','" + Balance + "','" + Entered_Email + "','" + Password + "','" + pinCode + "') ";
         State.executeUpdate(query);
         if (Cursor != null) {
+            AccCreated(Entered_Email);
             System.out.println("Registerd Succefully!");
         }
 
@@ -142,10 +143,11 @@ public class Admin extends People {
 
         Cursor = DriverManager.getConnection(URL, USER, PASSWORD);
         State = Cursor.createStatement();
+         AccDeleted(GivenEmail);
         String query = "DELETE FROM acc WHERE email='" + GivenEmail + "'";
         State.executeUpdate(query);
         if (Cursor != null) {
-            AccDeleted(GivenEmail);
+           
             System.out.println("Your records have been deleted from our database");
         }
 

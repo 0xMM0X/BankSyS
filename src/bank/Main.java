@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class Main {
 
+    static Usr[] user = new Usr[4];
     static Scanner scan = new Scanner(System.in);
 
     public static void admin() throws IOException, SQLException, ClassNotFoundException {
@@ -30,7 +31,7 @@ public class Main {
                         break;
                     case 2:
                         mainMenu();
-                    case 3: 
+                    case 3:
                         System.exit(0);
                     default:
                         System.out.println("Invalid Choice ");
@@ -41,8 +42,7 @@ public class Main {
         }
     }
 
-
-public static void inAdmin() throws IOException, SQLException, ClassNotFoundException {
+    public static void inAdmin() throws IOException, SQLException, ClassNotFoundException {
         Admin ad = new Admin();
         System.out.println("1 = Add New Account \n2 = Deactive Account \n3 = Transaction History\n"
                 + "4 = Change Account Password \n5 = Logout \n6 = Exit\nEnter Your Choice : ");
@@ -119,29 +119,30 @@ public static void inAdmin() throws IOException, SQLException, ClassNotFoundExce
         Usr user = new Usr();
         while (!user.login(Email, Password)) {
             System.out.println("\n1 = Try again!\n2 = Home\n3 = Exit\nEnter Your Choice : ");
-                int Flag = scan.nextInt();
-                switch (Flag) {
-                    case 1:
-                        System.out.println("Enter Your Email");
-                        Email = scan.next();
-                        System.out.println("Enter Your Password");
-                       Password = scan.next();
-                        break;
-                    case 2:
-                        mainMenu();
-                    case 3: 
-                        System.exit(0);
-                    default:
-                        System.out.println("Invalid Choice ");
-                        break;
-                }
-            
+            int Flag = scan.nextInt();
+            switch (Flag) {
+                case 1:
+                    System.out.println("Enter Your Email");
+                    Email = scan.next();
+                    System.out.println("Enter Your Password");
+                    Password = scan.next();
+                    break;
+                case 2:
+                    mainMenu();
+                case 3:
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid Choice ");
+                    break;
+            }
+
         }
         inUser(Email, Password, user);
     }
 
     public static void inUser(String email, String password, Usr user) throws IOException, SQLException, ClassNotFoundException {
-        System.out.println("1 = Deposite \n2 = Transfere Money \n3 = Withdrow \n4 = Account Info \n5 = Logout \n6 = Exit");
+        System.out.println("1 = Deposite \n2 = Transfere Money \n3 = Withdrow \n4 = Account Info \n5 = Logout \n6 = Exit"
+                + "\nEnter Your Choice : ");
         switch (scan.nextInt()) {
             case 1:
                 user.DepositsMoney(email);
@@ -152,7 +153,7 @@ public static void inAdmin() throws IOException, SQLException, ClassNotFoundExce
                 inUser(email, password, user);
                 break;
             case 3:
-                user.WithdrawMoney();
+                user.WithdrawMoney(email);
                 inUser(email, password, user);
                 break;
             case 4:
@@ -225,12 +226,11 @@ public static void inAdmin() throws IOException, SQLException, ClassNotFoundExce
                 inATM(ACC, pin);
                 break;
             case 6:
-                
-                if(atm.deactivation(ACC)==0){
+
+                if (atm.deactivation(ACC) == 0) {
                     inATM(ACC, pin);
-                }
-                else{
-                ATM();
+                } else {
+                    ATM();
                 }
                 break;
             case 7:
@@ -259,6 +259,7 @@ public static void inAdmin() throws IOException, SQLException, ClassNotFoundExce
                 ATM();
                 break;
             case 4:
+
                 System.exit(0);
             default:
                 System.out.println("Invalid choice!");

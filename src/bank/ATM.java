@@ -62,6 +62,7 @@ public class ATM extends Usr {
             UpdateBal(AccNumber, SenderBalance);
             float ReseverBalance = getBalance(acco_of_recei) + value;
             UpdateBal(acco_of_recei, ReseverBalance);
+            System.out.println("Transaction succeeded");
         } else {
             System.out.println(EmailExist(acco_of_recei));
         }
@@ -118,8 +119,9 @@ public class ATM extends Usr {
         if (value <= balance) {
             balance = balance - value;
             UpdateBal(AccNum, balance);
-            System.out.println("Withrew successfully!");
-            Transaction(AccNum, "Withdrew amount", value);
+            System.out.println("Your new Balnce : "+balance);
+            System.out.println("Withdrow successfully!");
+            Transaction(AccNum, "Withdrow amount", value);
         } else {
             System.out.println("You don't have that amount of money.\n Your Balance is : " + balance);
         }

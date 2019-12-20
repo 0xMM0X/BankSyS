@@ -76,6 +76,19 @@ public class People {
         }
 
     }
+        public void AccCreated(String Email) throws SQLException {
+        try {
+            String filename=String.valueOf(getAccNum(Email));
+            File file = new File("C:/Users/MMOX/Desktop/BankSyS-master/Data/" + filename + ".txt");
+            FileWriter fr = new FileWriter(file, true);
+            fr.write(  "Account Created \n");
+            fr.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+    }
 
     public void UpdateBal(String email, float NewBalance) throws ClassNotFoundException, SQLException {
         Class.forName(DRIVER);
